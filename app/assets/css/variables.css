@@ -1,0 +1,156 @@
+/* assets/css/variables.css */
+:root {
+    /* Основные цвета */
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    /* Системные цвета */
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-primary-active: #1d4ed8;
+    --color-secondary: #64748b;
+    --color-secondary-hover: #475569;
+    --color-accent: #f59e0b;
+    --color-accent-hover: #d97706;
+    --color-success: #22c55e;
+    --color-success-hover: #16a34a;
+    --color-danger: #ef4444;
+    --color-danger-hover: #dc2626;
+    --color-warning: #facc15;
+    --color-warning-hover: #eab308;
+    --color-info: #0ea5e9;
+    --color-info-hover: #0284c7;
+
+    /* Цвета фона */
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-bg-tertiary: #f3f4f6;
+    --color-bg-overlay: rgba(0, 0, 0, 0.5);
+
+    /* Цвета текста */
+    --color-text: #111827;
+    --color-text-secondary: #4b5563;
+    --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af;
+    --color-text-inverse: #ffffff;
+
+    /* Цвета для компонентов */
+    --color-border: #e5e7eb;
+    --color-border-hover: #d1d5db;
+    --color-border-focus: #3b82f6;
+
+    /* Цвета для карточек */
+    --color-card-bg: #ffffff;
+    --color-card-border: #e5e7eb;
+    --color-card-shadow: rgba(0, 0, 0, 0.05);
+
+    /* Цвета для кнопок */
+    --color-button-primary-bg: #3b82f6;
+    --color-button-primary-bg-hover: #2563eb;
+    --color-button-primary-text: #ffffff;
+    --color-button-secondary-bg: #f3f4f6;
+    --color-button-secondary-bg-hover: #e5e7eb;
+    --color-button-secondary-text: #111827;
+    --color-button-outline-border: #3b82f6;
+    --color-button-outline-text: #3b82f6;
+    --color-button-outline-text-hover: #2563eb;
+    --color-button-ghost-text: #3b82f6;
+    --color-button-ghost-text-hover: #2563eb;
+    --color-button-danger-bg: #ef4444;
+    --color-button-danger-bg-hover: #dc2626;
+    --color-button-danger-text: #ffffff;
+    --color-button-disabled-bg: #f3f4f6;
+    --color-button-disabled-text: #9ca3af;
+
+    /* Цвета для инпутов */
+    --color-input-bg: #ffffff;
+    --color-input-border: #e5e7eb;
+    --color-input-border-hover: #d1d5db;
+    --color-input-border-focus: #3b82f6;
+    --color-input-text: #111827;
+    --color-input-placeholder: #9ca3af;
+    --color-input-disabled-bg: #f3f4f6;
+    --color-input-disabled-text: #6b7280;
+
+    /* Тени */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* Радиусы */
+    --radius-xs: 2px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+    --radius-full: 9999px;
+
+    /* Отступы */
+    --spacing-0: 0;
+    --spacing-1: 0.25rem; /* 4px */
+    --spacing-2: 0.5rem; /* 8px */
+    --spacing-3: 0.75rem; /* 12px */
+    --spacing-4: 1rem; /* 16px */
+    --spacing-5: 1.25rem; /* 20px */
+    --spacing-6: 1.5rem; /* 24px */
+    --spacing-7: 1.75rem; /* 28px */
+    --spacing-8: 2rem; /* 32px */
+    --spacing-9: 2.25rem; /* 36px */
+    --spacing-10: 2.5rem; /* 40px */
+    --spacing-11: 2.75rem; /* 44px */
+    --spacing-12: 3rem; /* 48px */
+
+    /* Шрифты */
+    --font-size-xs: 0.75rem; /* 12px */
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-base: 1rem; /* 16px */
+    --font-size-lg: 1.125rem; /* 18px */
+    --font-size-xl: 1.25rem; /* 20px */
+    --font-size-2xl: 1.5rem; /* 24px */
+    --font-size-3xl: 1.875rem; /* 30px */
+    --font-size-4xl: 2.25rem; /* 36px */
+    --font-size-5xl: 3rem; /* 48px */
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Высота линии */
+    --line-height-none: 1;
+    --line-height-tight: 1.25;
+    --line-height-snug: 1.375;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.625;
+    --line-height-loose: 2;
+
+    /* Breakpoints */
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-xxl: 1400px;
+
+    /* Z-index */
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1020;
+    --z-index-fixed: 1030;
+    --z-index-modal-backdrop: 1040;
+    --z-index-modal: 1050;
+    --z-index-popover: 1060;
+    --z-index-tooltip: 1070;
+
+    /* Transition */
+    --transition-fast: 0.1s;
+    --transition-normal: 0.2s;
+    --transition-slow: 0.3s;
+
+    /* Компоненты */
+    --navbar-height: 64px;
+    --border-width: 1px;
+    --sidebar-width-expanded: 240px;
+    --sidebar-width-collapsed: 70px;
+}
