@@ -16,11 +16,16 @@ export default defineNuxtConfig({
                 }
             }
         }],
-        '@nuxt/icon'
+        '@nuxt/icon',
+        '@pinia/nuxt'
     ],
 
     css: [
         '@/assets/css/normalize.css',
         '@/assets/css/variables.css'
-    ]
+    ],
+
+    pinia: {
+        storesDirs: ['./store/**'],
+    },
 })

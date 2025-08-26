@@ -1,4 +1,55 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {v4 as uuid} from 'uuid'
+import {account} from '@/utils/appwrite'
+import {useAuthStore, useIsLoadingStore} from '~~/store/auth.store'
+
+useSeoMeta({title: 'Login | CRM System'})
+
+const email = ref('')
+const password = ref('')
+
+const router = useRouter()
+const isLoadingStore = useIsLoadingStore()
+const authStore = useAuthStore()
+
+const login = async () => {
+  try {
+    isLoadingStore.set(true)
+
+    await account.createEmailPasswordSession(email.value, password.value)
+    const response = await account.get()
+
+    if (response) {
+      authStore.set({
+        email: response.email,
+        name: response.name,
+        status: response.status
+      })
+
+      email.value = ''
+      password.value = ''
+
+      await router.push('/')
+    }
+  } catch (error) {
+    console.error('Ошибка входа:', error)
+  } finally {
+    isLoadingStore.set(false)
+  }
+}
+
+const register = async () => {
+  try {
+    isLoadingStore.set(true)
+    await account.create(uuid(), email.value, password.value)
+    await login()
+  } catch (error) {
+    console.error('Ошибка регистрации:', error)
+  } finally {
+    isLoadingStore.set(false)
+  }
+}
+</script>
 
 <template>
   <section class="login">
@@ -10,8 +61,10 @@
         </p>
       </header>
 
-      <form class="login__form">
+      <form class="login__form" @submit.prevent="login">
         <UiInput
+            v-model="email"
+            id="login-email"
             label="Email"
             placeholder="Введите ваш email"
             type="email"
@@ -19,25 +72,22 @@
         />
 
         <UiInput
+            v-model="password"
+            id="login-password"
             label="Пароль"
             placeholder="Введите ваш пароль"
             type="password"
             required
         />
 
-        <UiButton
-            type="submit"
-            variant="primary"
-            size="lg"
-            block
-        >
+        <UiButton type="submit" variant="primary" size="lg" block>
           Войти
         </UiButton>
       </form>
 
       <footer class="login__footer">
         <NuxtLink to="/" class="login__link">Забыли пароль?</NuxtLink>
-        <NuxtLink to="/" class="login__link">Создать аккаунт</NuxtLink>
+        <NuxtLink @click.prevent="register" to="/" class="login__link">Создать аккаунт</NuxtLink>
       </footer>
     </div>
   </section>

@@ -1,16 +1,32 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+import {account} from '@/utils/appwrite'
+
+import {useAuthStore, useIsLoadingStore} from '~~/store/auth.store'
+
+const router = useRouter()
 const isOpen = ref(true)
 
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value
 }
+
+const isLoadingStore = useIsLoadingStore()
+const authStore = useAuthStore()
+
+const logout = async () => {
+  try {
+    isLoadingStore.set(true)
+    await account.deleteSession('current')
+    authStore.clear()
+    await router.push('/login')
+  } finally {
+    isLoadingStore.set(false)
+  }
+}
 </script>
 
 <template>
-  <aside
-      class="sidebar"
-      :class="{ 'sidebar--collapsed': !isOpen }"
-  >
+  <aside class="sidebar" :class="{ 'sidebar--collapsed': !isOpen }">
     <div class="sidebar__header">
       <NuxtLink to="/" class="logo-link">
         <NuxtImg
@@ -22,55 +38,70 @@ const toggleSidebar = () => {
         />
       </NuxtLink>
 
-      <button class="toggle-btn" @click="toggleSidebar">
+      <button class="toggle-btn" @click="toggleSidebar" aria-label="Свернуть меню">
         <Icon
-            name="heroicons:chevron-left"
-            v-if="isOpen"
-            class="toggle-icon"
-        />
-        <Icon
-            name="heroicons:chevron-right"
-            v-else
+            :name="isOpen ? 'heroicons:chevron-left' : 'heroicons:chevron-right'"
             class="toggle-icon"
         />
       </button>
     </div>
 
-    <nav class="navigation">
+    <nav class="sidebar__nav">
       <LayoutMenu/>
     </nav>
+
+    <div class="sidebar__footer">
+      <button class="logout-btn" @click="logout" aria-label="Выйти из аккаунта">
+        <Icon name="heroicons:arrow-left-on-rectangle" class="logout-icon"/>
+        <span class="logout-label" v-if="isOpen">Выйти</span>
+      </button>
+    </div>
   </aside>
 </template>
 
-<style lang="sass" scoped>
+<style scoped lang="sass">
 .sidebar
+  display: flex
+  flex-direction: column
   width: var(--sidebar-width-expanded)
   height: 100vh
   background-color: var(--color-bg)
   border-right: var(--border-width) solid var(--color-border)
-  padding: var(--spacing-5) 0
   box-shadow: var(--shadow-md)
-  overflow-y: auto
   transition: width 0.3s ease
 
   &--collapsed
     width: var(--sidebar-width-collapsed)
 
-    .nav-link span
+    .nav-link span,
+    .logout-label
       display: none
 
     .logo-link
       padding: 0
+      width: auto
 
-.sidebar__header
-  display: flex
-  align-items: center
-  justify-content: space-between
-  padding: 0 var(--spacing-4)
-  margin-bottom: var(--spacing-6)
+  &__header
+    flex-shrink: 0
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: var(--spacing-4)
+    border-bottom: var(--border-width) solid var(--color-border)
+
+  &__nav
+    flex: 1
+    overflow-y: auto
+    padding: var(--spacing-5) 0
+
+  &__footer
+    flex-shrink: 0
+    padding: var(--spacing-4)
+    border-top: var(--border-width) solid var(--color-border)
 
 .logo-link
   display: block
+  transition: opacity 0.3s ease
 
 .logo
   max-width: 100%
@@ -82,12 +113,57 @@ const toggleSidebar = () => {
   cursor: pointer
   padding: var(--spacing-2)
   color: var(--color-text-secondary)
-  transition: color 0.2s ease
+  transition: color var(--transition-normal) ease
 
   &:hover
     color: var(--color-primary)
 
 .toggle-icon
-  width: 20px
-  height: 20px
+  width: 24px
+  height: 24px
+
+.logout-btn
+  display: flex
+  align-items: center
+  justify-content: flex-start
+  gap: var(--spacing-2)
+  width: 100%
+  background: none
+  border: none
+  cursor: pointer
+  color: var(--color-text-secondary)
+  font-size: var(--font-size-base)
+  transition: color var(--transition-normal) ease
+
+  &:hover
+    color: var(--color-danger)
+
+  .sidebar--collapsed &
+    justify-content: center
+
+.logout-icon
+  width: 24px
+  height: 24px
+
+.logout-label
+  white-space: nowrap
+
+@media (max-width: 768px)
+  .sidebar
+    position: fixed
+    z-index: 1000
+    top: 0
+    left: 0
+    height: 100vh
+    transition: transform 0.3s ease
+    transform: translateX(0)
+
+    &--collapsed
+      transform: translateX(-100%)
+
+  .toggle-btn
+    padding: var(--spacing-3)
+
+  .logout-btn
+    font-size: var(--font-size-sm)
 </style>
