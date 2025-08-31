@@ -145,9 +145,12 @@ const filteredOrders = computed(() =>
 
 <style scoped lang="sass">
 .orders-container
-  max-width: 800px
+  max-width: 1200px
   margin: 0 auto
   padding: var(--spacing-6)
+  display: flex
+  flex-direction: column
+  gap: var(--spacing-6)
 
 .header
   margin-bottom: var(--spacing-6)
@@ -242,7 +245,7 @@ const filteredOrders = computed(() =>
   font-weight: var(--font-weight-bold)
   color: var(--color-text)
 
-@media (max-width: var(--breakpoint-md))
+@media (max-width: 768px)
   .orders-container
     padding: var(--spacing-4)
 

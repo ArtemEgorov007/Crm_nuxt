@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="feedback-container">
@@ -97,9 +98,12 @@
 
 <style scoped lang="sass">
 .feedback-container
-  max-width: 800px
-  padding: var(--spacing-6)
+  max-width: 1200px
   margin: 0 auto
+  padding: var(--spacing-6)
+  display: flex
+  flex-direction: column
+  gap: var(--spacing-6)
 
 .header
   margin-bottom: var(--spacing-8)
@@ -191,7 +195,7 @@
     color: var(--color-text-secondary)
     text-align: right
 
-@media (max-width: var(--breakpoint-md))
+@media (max-width: 768px)
   .feedback-container
     padding: var(--spacing-4)
 

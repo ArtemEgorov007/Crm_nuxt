@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="products-container">
@@ -334,7 +335,7 @@
   width: 24px
   height: 24px
 
-@media (max-width: var(--breakpoint-md))
+@media (max-width: 768px)
   .products-container
     padding: var(--spacing-4)
 

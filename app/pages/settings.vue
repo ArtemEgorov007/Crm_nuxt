@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="settings-container">
@@ -119,9 +120,12 @@
 
 <style scoped lang="sass">
 .settings-container
-  max-width: 800px
+  max-width: 1200px
   margin: 0 auto
   padding: var(--spacing-6)
+  display: flex
+  flex-direction: column
+  gap: var(--spacing-6)
 
 .header
   margin-bottom: var(--spacing-8)
@@ -197,7 +201,7 @@
   .ui-btn
     min-width: 160px
 
-@media (max-width: var(--breakpoint-md))
+@media (max-width: 768px)
   .settings-container
     padding: var(--spacing-4)
 

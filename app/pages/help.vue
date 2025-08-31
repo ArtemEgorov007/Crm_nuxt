@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="help-container">
@@ -112,9 +113,12 @@
 
 <style scoped lang="sass">
 .help-container
-  max-width: 800px
-  padding: var(--spacing-6)
+  max-width: 1200px
   margin: 0 auto
+  padding: var(--spacing-6)
+  display: flex
+  flex-direction: column
+  gap: var(--spacing-6)
 
 .header
   text-align: center
@@ -189,7 +193,7 @@
   gap: var(--spacing-3)
   flex-wrap: wrap
 
-@media (max-width: var(--breakpoint-md))
+@media (max-width: 768px)
   .help-container
     padding: var(--spacing-4)
 

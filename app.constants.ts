@@ -1,6 +1,6 @@
 export const APP_WRITE_ID = 'crm-system-nuxt-record123'
 export const DB_ID = '68acc5b50032ea8842e7'
 export const COLLECTION_DEALS = 'deals'
-export const COLLECTION_CUSTOMERS = 'customers'
-export const COLLECTION_COMMENTS = 'comments'
+export const COLLECTION_CUSTOMERS = '68acc8b90006f0f74523'
+export const COLLECTION_COMMENTS = '68acc798002a4a7de1fa'
 export const STORAGE_ID = 'storage'

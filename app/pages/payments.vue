@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="payments-container">
@@ -156,7 +157,8 @@
 
 <style scoped lang="sass">
 .payments-container
-  max-width: 800px
+  max-width: 1200px
+  margin: 0 auto
   padding: var(--spacing-6)
   display: flex
   flex-direction: column
@@ -304,9 +306,10 @@
 .actions
   min-width: 120px
 
-@media (max-width: var(--breakpoint-md))
+@media (max-width: 1200px)
   .payments-container
     padding: var(--spacing-4)
+    max-width: 800px
 
   .toolbar
     flex-direction: column
