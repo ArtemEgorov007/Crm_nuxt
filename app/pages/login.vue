@@ -66,7 +66,7 @@ const register = async () => {
             v-model="email"
             id="login-email"
             label="Email"
-            placeholder="Введите ваш email"
+            placeholder="Введите ваш  email"
             type="email"
             required
         />
@@ -99,7 +99,7 @@ const register = async () => {
   align-items: center
   justify-content: center
   min-height: 100vh
-  padding: var(--spacing-4)
+  padding: var(--spacing-6)
   background-color: var(--color-bg-alt)
 
 .login__container

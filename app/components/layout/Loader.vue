@@ -1,3 +1,7 @@
+<script setup lang="ts">
+// Нет необходимости в логике, только представление
+</script>
+
 <template>
   <div class="loader-wrapper">
     <div class="loader-container">
@@ -12,8 +16,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped lang="sass">
 .loader-wrapper
