@@ -14,6 +14,7 @@ export function useKanbanQuery() {
 
             for (const deal of deals) {
                 const column = newBoard.find(e => e.id === deal.status);
+
                 if (column) {
                     column.items.push({
                         $createdAt: deal.$createdAt,

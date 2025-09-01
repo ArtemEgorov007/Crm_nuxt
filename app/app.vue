@@ -11,7 +11,7 @@ html, body
   height: 100%
   margin: 0
   padding: 0
-  font-family: 'Lato', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif
+  font-family: 'Nunito Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif
   background-color: var(--color-bg)
   color: var(--color-text)
   font-size: var(--font-size-base)

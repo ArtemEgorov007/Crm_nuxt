@@ -48,7 +48,7 @@ const {data, isLoading, refetch} = useKanbanQuery()
           >
             <UiCardContent>
               <UiCardTitle tag="h2">
-                <div class="card-company"> {{ card.companyName }}</div>
+                {{ card.companyName }}
               </UiCardTitle>
               <UiCardDescription>
                 <div class="card-name">{{ card.name }}</div>
