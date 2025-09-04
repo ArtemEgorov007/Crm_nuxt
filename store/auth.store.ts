@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 
 interface IUser {
     email: string
@@ -10,6 +10,10 @@ interface IAuthState {
     user: IUser
 }
 
+interface ILoadingState {
+    isLoading: boolean
+}
+
 const defaultUser: IUser = {
     email: '',
     name: '',
@@ -18,7 +22,7 @@ const defaultUser: IUser = {
 
 export const useAuthStore = defineStore('auth', {
     state: (): IAuthState => ({
-        user: { ...defaultUser }
+        user: {...defaultUser}
     }),
 
     getters: {
@@ -29,11 +33,11 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         clear() {
-            this.user = { ...defaultUser }
+            this.user = {...defaultUser}
         },
 
         set(userData: IUser) {
-            this.user = { ...userData }
+            this.user = {...userData}
         },
 
         updateAuthStatus(status: boolean) {
@@ -43,7 +47,7 @@ export const useAuthStore = defineStore('auth', {
 })
 
 export const useIsLoadingStore = defineStore('isLoading', {
-    state: () => ({
+    state: (): ILoadingState => ({
         isLoading: true
     }),
 

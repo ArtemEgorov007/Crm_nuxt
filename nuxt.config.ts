@@ -9,6 +9,7 @@ export default defineNuxtConfig({
         '@nuxt/image',
         '@nuxt/icon',
         '@pinia/nuxt',
+        '@nuxt/ui',
 
         [
             '@vee-validate/nuxt',

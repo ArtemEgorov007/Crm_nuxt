@@ -1,34 +1,32 @@
-<script setup lang="ts">
-// Нет необходимости в логике, только представление
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="loader-wrapper">
-    <div class="loader-container">
-      <NuxtImg
-          src="/loader.svg"
-          alt="Загрузка..."
-          class="loader-image"
-          width="220"
-          height="auto"
-      />
-      <p class="loader-text">Загрузка данных...</p>
+  <transition name="fade-loader">
+    <div class="loader-wrapper">
+      <div class="loader-container">
+        <NuxtImg
+            src="/loader.svg"
+            alt="Загрузка..."
+            class="loader-image"
+            width="220"
+            height="auto"
+        />
+        <p class="loader-text">Загрузка данных...</p>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <style scoped lang="sass">
 .loader-wrapper
   position: fixed
-  top: 0
-  left: 0
-  width: 100vw
-  height: 100vh
+  inset: 0
   background-color: var(--color-bg)
   display: flex
   align-items: center
   justify-content: center
   z-index: var(--z-index-modal)
+  min-height: 100vh
 
 .loader-container
   display: flex
@@ -37,7 +35,8 @@
   justify-content: center
 
 .loader-image
-  max-width: 100%
+  display: block
+  width: 220px
   height: auto
   margin-bottom: var(--spacing-4)
 
@@ -45,4 +44,12 @@
   color: var(--color-text-secondary)
   font-size: var(--font-size-base)
   font-weight: var(--font-weight-medium)
+
+.fade-loader-enter-active,
+.fade-loader-leave-active
+  transition: opacity 0.3s ease
+
+.fade-loader-enter-from,
+.fade-loader-leave-to
+  opacity: 0
 </style>

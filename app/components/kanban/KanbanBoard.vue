@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import {ref} from 'vue'
+import {useQueryClient} from '@tanstack/vue-query'
+
 import {useKanbanQuery} from '~/components/kanban/useKanbanQuery'
 import type {ICard, IColumn} from '~/components/kanban/kanban.types'
 
 const dragCardRef = ref<ICard | null>(null)
 const sourceColumnRef = ref<IColumn | null>(null)
 
-const {data, isLoading, refetch} = useKanbanQuery()
+const queryClient = useQueryClient()
+
+const {data, isLoading} = useKanbanQuery()
 
 const handleDragStart = (card: ICard, column: IColumn) => {
   dragCardRef.value = card
@@ -16,6 +21,12 @@ const handleDragEnd = () => {
   dragCardRef.value = null
   sourceColumnRef.value = null
 }
+
+const handleCardMoved = () => {
+  queryClient.invalidateQueries({queryKey: ['deals']})
+}
+
+const store = useDealSlideStore();
 </script>
 
 <template>
@@ -30,7 +41,7 @@ const handleDragEnd = () => {
       <p>Загрузка данных...</p>
     </div>
 
-    <div v-else-if="data" class="kanban-board">
+    <div v-else-if="data?.length" class="kanban-board">
       <KanbanColumn
           v-for="column in data"
           :key="column.id"
@@ -39,7 +50,7 @@ const handleDragEnd = () => {
           :source-column="sourceColumnRef"
           @dragstart="handleDragStart"
           @dragend="handleDragEnd"
-          @card-moved="refetch"
+          @card-moved="handleCardMoved"
       />
     </div>
 
@@ -47,6 +58,8 @@ const handleDragEnd = () => {
       <p>Нет данных для отображения</p>
     </div>
   </div>
+
+  <KanbanSlideover/>
 </template>
 
 <style scoped lang="sass">
@@ -73,6 +86,7 @@ const handleDragEnd = () => {
   justify-content: center
   padding: var(--spacing-8)
   color: var(--color-text-secondary)
+  min-height: 400px
 
 .spinner
   width: 32px
