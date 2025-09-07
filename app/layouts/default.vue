@@ -29,11 +29,13 @@ onMounted(async () => {
   </transition>
 
   <div v-show="!isLoadingStore.isLoading" :class="{ layout: authStore.isAuth }">
-    <LayoutSidebar v-if="authStore.isAuth"/>
+    <LayoutSidebar v-if="authStore.isAuth" class="desktop-sidebar"/>
 
-    <main class="layout__main">
+    <main class="layout__main" :class="{ 'layout__main--mobile': authStore.isAuth }">
       <slot/>
     </main>
+
+    <LayoutMobileBottomNav v-if="authStore.isAuth" class="mobile-bottom-nav"/>
   </div>
 </template>
 
@@ -50,6 +52,17 @@ onMounted(async () => {
   min-height: 100vh
   transition: margin-left var(--transition-normal) ease
 
+  &--mobile
+    padding-bottom: 80px
+
+.desktop-sidebar
+  @media (max-width: 768px)
+    display: none
+
+.mobile-bottom-nav
+  @media (min-width: 769px)
+    display: none
+
 .loader-fixed
   position: fixed
   inset: 0
@@ -59,7 +72,6 @@ onMounted(async () => {
   justify-content: center
   z-index: var(--z-index-modal)
 
-/* Плавное появление/исчезновение */
 .fade-loader-enter-active,
 .fade-loader-leave-active
   transition: opacity 0.3s ease
@@ -67,4 +79,13 @@ onMounted(async () => {
 .fade-loader-enter-from,
 .fade-loader-leave-to
   opacity: 0
+
+@media (max-width: 768px)
+  .layout
+    flex-direction: column
+
+  .layout__main
+    margin-left: 0
+    padding: var(--spacing-3)
+    padding-bottom: 80px
 </style>

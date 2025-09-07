@@ -2,11 +2,12 @@
 import type {ICard} from '~/components/kanban/kanban.types'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
+import {useDealSlideStore} from '~~/store/deal-slide.store'
 
 dayjs.locale('ru')
 
 const props = defineProps<{
-  card: ICard,
+  card: ICard
   columnId: string
 }>()
 
@@ -14,6 +15,8 @@ const emit = defineEmits<{
   (e: 'dragstart'): void
   (e: 'dragend'): void
 }>()
+
+const dealSlideStore = useDealSlideStore()
 
 const handleDragStart = (event: DragEvent) => {
   event.dataTransfer?.setData('text/plain', props.card.id)
@@ -24,6 +27,10 @@ const handleDragStart = (event: DragEvent) => {
 const handleDragEnd = () => {
   emit('dragend')
 }
+
+const handleOpenSlideover = () => {
+  dealSlideStore.set(props.card)
+}
 </script>
 
 <template>
@@ -32,6 +39,7 @@ const handleDragEnd = () => {
       draggable="true"
       @dragstart="handleDragStart"
       @dragend="handleDragEnd"
+      @click="handleOpenSlideover"
   >
     <UiCardContent>
       <UiCardTitle tag="h2" class="card-company">
@@ -61,8 +69,9 @@ const handleDragEnd = () => {
   background-color: var(--color-card-bg)
   box-shadow: var(--shadow-sm)
   cursor: grab
-  transition: box-shadow 0.2s ease
+  transition: box-shadow var(--transition-normal) ease
   border: var(--border-width) solid var(--color-card-border)
+  user-select: none
 
   &:hover
     box-shadow: var(--shadow-md)
@@ -90,8 +99,8 @@ const handleDragEnd = () => {
 
 .status-badge
   font-size: var(--font-size-xs)
-  font-weight: 500
-  padding: 2px 6px
+  font-weight: var(--font-weight-medium)
+  padding: var(--spacing-1) var(--spacing-2)
   border-radius: var(--radius-full)
   text-transform: uppercase
 

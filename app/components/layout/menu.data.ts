@@ -28,7 +28,7 @@ export const MENU_DATA: IMenuItem[] = [
     {
         name: 'Customers',
         icon: 'mingcute:group-line',
-        url: '/',
+        url: '/customers',
     },
     {
         name: 'Feedback',

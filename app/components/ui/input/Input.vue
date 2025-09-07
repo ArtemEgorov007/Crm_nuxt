@@ -1,10 +1,10 @@
 <script setup lang="ts">
 type InputType =
     | 'text' | 'email' | 'password' | 'number'
-    | 'url' | 'tel' | 'search' | 'date' | 'datetime-local'
+    | 'url' | 'tel' | 'search' | 'date' | 'datetime-local' | 'file'
 
 interface Props {
-  modelValue?: string | number
+  modelValue?: string | number | FileList
   label?: string
   placeholder?: string
   type?: InputType
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string | number): void
+  (e: 'update:modelValue', value: string | number | FileList): void
 }>()
 
 const inputValue = computed({
@@ -52,6 +52,14 @@ const inputClasses = computed(() => ({
   'ui-input__field--success': props.success,
   'ui-input__field--disabled': props.disabled
 }))
+
+// Для file input нужно использовать событие change, а не v-model
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target.files) {
+    emit('update:modelValue', target.files)
+  }
+}
 </script>
 
 <template>
@@ -68,6 +76,7 @@ const inputClasses = computed(() => ({
     <input
         :id="inputId"
         v-model="inputValue"
+        v-bind="$attrs"
         :type="type"
         :placeholder="placeholder"
         :disabled="disabled"
@@ -80,6 +89,7 @@ const inputClasses = computed(() => ({
         :aria-describedby="error ? `${inputId}-error` : undefined"
         class="ui-input__field"
         :class="inputClasses"
+        @change="type === 'file' ? handleFileChange($event) : undefined"
     />
 
     <p v-if="error" :id="`${inputId}-error`" class="ui-input__error">

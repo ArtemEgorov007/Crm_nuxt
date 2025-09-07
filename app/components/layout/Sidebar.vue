@@ -150,20 +150,6 @@ const logout = async () => {
 
 @media (max-width: 768px)
   .sidebar
-    position: fixed
-    z-index: 1000
-    top: 0
-    left: 0
-    height: 100vh
-    transition: transform 0.3s ease
-    transform: translateX(0)
-
-    &--collapsed
-      transform: translateX(-100%)
-
-  .toggle-btn
-    padding: var(--spacing-3)
-
-  .logout-btn
-    font-size: var(--font-size-sm)
+    display: none
+// Скрываем сайдбар на мобильных
 </style>
