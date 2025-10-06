@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// Initialize theme on app startup
+import '~/assets/css/dark-theme.css'
+</script>
 
 <template>
   <NuxtLayout>

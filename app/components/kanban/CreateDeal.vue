@@ -30,7 +30,7 @@ const toggleForm = () => (isOpenForm.value = !isOpenForm.value)
 
 const queryClient = useQueryClient()
 
-const {handleSubmit, defineField, handleReset} = useForm<IDealFormState>({
+const {handleSubmit, defineField, handleReset, errors} = useForm<IDealFormState>({
   initialValues: {
     status: props.status,
     name: '',
@@ -44,16 +44,32 @@ const [price, priceAttrs] = defineField('price')
 const [customerEmail, customerEmailAttrs] = defineField('customer.email')
 const [customerName, customerNameAttrs] = defineField('customer.name')
 
-const {mutate, isPending} = useMutation({
+const {mutate, isPending, isError, error} = useMutation({
   mutationKey: ['create-deal'],
   mutationFn: async (data: IDealFormState) => {
+    if (!data.name.trim()) {
+      throw new Error('Название сделки обязательно');
+    }
+    
+    if (data.price <= 0) {
+      throw new Error('Сумма должна быть больше нуля');
+    }
+    
+    if (!data.customer.name.trim()) {
+      throw new Error('Имя компании обязательно');
+    }
+    
+    if (!data.customer.email.trim()) {
+      throw new Error('Email клиента обязателен');
+    }
+
     const dealData: Partial<IDeal> = {
-      name: data.name,
+      name: data.name.trim(),
       price: data.price,
       status: data.status as any,
       customer: {
-        name: data.customer.name,
-        email: data.customer.email
+        name: data.customer.name.trim(),
+        email: data.customer.email.trim()
       },
       $id: uuid(),
       $createdAt: new Date().toISOString()
@@ -102,6 +118,10 @@ const onSubmit = handleSubmit(values => mutate(values))
           />
         </div>
 
+        <div v-if="isError" class="error-message">
+          Ошибка: {{ (error as Error).message }}
+        </div>
+
         <UiInput
             id="deal-name"
             v-model="name"
@@ -109,6 +129,7 @@ const onSubmit = handleSubmit(values => mutate(values))
             label="Наименование сделки"
             placeholder="Введите название сделки"
             type="text"
+            :error="errors.name"
             required
         />
 
@@ -119,6 +140,7 @@ const onSubmit = handleSubmit(values => mutate(values))
             label="Сумма (₽)"
             placeholder="Введите сумму"
             type="number"
+            :error="errors.price"
             required
         />
 
@@ -129,6 +151,7 @@ const onSubmit = handleSubmit(values => mutate(values))
             label="Email клиента"
             placeholder="Введите email клиента"
             type="email"
+            :error="errors.customer?.email"
             required
         />
 
@@ -139,6 +162,7 @@ const onSubmit = handleSubmit(values => mutate(values))
             label="Имя компании"
             placeholder="Введите имя компании"
             type="text"
+            :error="errors.customer?.name"
             required
         />
 
@@ -148,6 +172,7 @@ const onSubmit = handleSubmit(values => mutate(values))
             size="md"
             block
             :loading="isPending"
+            :disabled="isPending"
         >
           {{ isPending ? 'Создание...' : 'Добавить сделку' }}
         </UiButton>
@@ -196,4 +221,12 @@ const onSubmit = handleSubmit(values => mutate(values))
 .fade-slide-leave-to
   transform: translateY(-20px)
   opacity: 0
+
+.error-message
+  padding: var(--spacing-3)
+  background-color: var(--color-error-bg)
+  color: var(--color-error-text)
+  border: 1px solid var(--color-error-border)
+  border-radius: var(--radius-md)
+  font-size: var(--font-size-sm)
 </style>

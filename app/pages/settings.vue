@@ -1,4 +1,46 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useTheme } from '~/composables/useTheme'
+import { useAuthStore } from '~~/store/auth.store'
+
+const { theme, setTheme } = useTheme()
+const authStore = useAuthStore()
+
+const languages = [
+  { value: 'ru', label: 'Русский' },
+  { value: 'en', label: 'English' }
+]
+
+const timezones = [
+  { value: 'Europe/Moscow', label: 'Москва (GMT+3)' },
+  { value: 'Asia/Yekaterinburg', label: 'Екатеринбург (GMT+5)' },
+  { value: 'Asia/Novosibirsk', label: 'Новосибирск (GMT+7)' }
+]
+
+const themes = [
+  { value: 'light', label: 'Светлая' },
+  { value: 'dark', label: 'Темная' }
+]
+
+const languagesModel = ref('ru')
+const timezoneModel = ref('Europe/Moscow')
+const themeModel = ref(theme.value)
+
+watch(theme, (newTheme) => {
+  themeModel.value = newTheme
+})
+
+const saveSettings = () => {
+  setTheme(themeModel.value)
+  alert('Настройки сохранены!')
+}
+
+const resetSettings = () => {
+  languagesModel.value = 'ru'
+  timezoneModel.value = 'Europe/Moscow'
+  themeModel.value = 'light'
+  setTheme('light')
+}
+</script>
 
 <template>
   <div class="settings-container">
@@ -16,44 +58,60 @@
         <form class="settings-form">
           <div class="form-group">
             <UiInput
+                :model-value="authStore.name"
                 label="Полное имя"
                 placeholder="Введите ваше полное имя"
                 type="text"
-                required
+                disabled
             />
           </div>
 
           <div class="form-group">
             <UiInput
+                :model-value="authStore.email"
                 label="Email"
                 placeholder="Введите ваш email"
                 type="email"
-                required
+                disabled
             />
           </div>
 
           <div class="form-group">
             <label class="form-label">Язык интерфейса</label>
-            <select class="form-select">
-              <option value="ru">Русский</option>
-              <option value="en">English</option>
+            <select v-model="languagesModel" class="form-select">
+              <option 
+                v-for="lang in languages" 
+                :key="lang.value" 
+                :value="lang.value"
+              >
+                {{ lang.label }}
+              </option>
             </select>
           </div>
 
           <div class="form-group">
             <label class="form-label">Тема</label>
-            <select class="form-select">
-              <option value="light">Светлая</option>
-              <option value="dark">Темная</option>
+            <select v-model="themeModel" class="form-select">
+              <option 
+                v-for="t in themes" 
+                :key="t.value" 
+                :value="t.value"
+              >
+                {{ t.label }}
+              </option>
             </select>
           </div>
 
           <div class="form-group">
             <label class="form-label">Часовой пояс</label>
-            <select class="form-select">
-              <option value="Europe/Moscow">Москва (GMT+3)</option>
-              <option value="Asia/Yekaterinburg">Екатеринбург (GMT+5)</option>
-              <option value="Asia/Novosibirsk">Новосибирск (GMT+7)</option>
+            <select v-model="timezoneModel" class="form-select">
+              <option 
+                v-for="tz in timezones" 
+                :key="tz.value" 
+                :value="tz.value"
+              >
+                {{ tz.label }}
+              </option>
             </select>
           </div>
         </form>
@@ -72,6 +130,7 @@
               <input
                   type="checkbox"
                   class="form-checkbox"
+                  checked
               >
               <span class="checkbox-text">Email уведомления</span>
             </label>
@@ -92,6 +151,7 @@
               <input
                   type="checkbox"
                   class="form-checkbox"
+                  checked
               >
               <span class="checkbox-text">SMS уведомления</span>
             </label>
@@ -104,12 +164,14 @@
       <UiButton
           variant="primary"
           size="md"
+          @click="saveSettings"
       >
         Сохранить изменения
       </UiButton>
       <UiButton
           variant="secondary"
           size="md"
+          @click="resetSettings"
       >
         Сбросить
       </UiButton>

@@ -69,6 +69,11 @@ const toggleLogout = () => {
             <span class="additional-item__label">{{ item.name }}</span>
           </NuxtLink>
 
+          <div class="additional-item theme-toggle-item">
+            <UiThemeToggle />
+            <span class="additional-item__label">Тема</span>
+          </div>
+
           <button class="additional-item additional-item--logout" @click="logout">
             <Icon name="heroicons:arrow-left-on-rectangle" class="additional-item__icon"/>
             <span class="additional-item__label">Выйти</span>
@@ -183,6 +188,12 @@ const toggleLogout = () => {
     &:hover
       background-color: var(--color-danger-light)
       color: var(--color-danger)
+
+.theme-toggle-item
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: var(--spacing-3)
 
 .additional-item__icon
   width: 18px

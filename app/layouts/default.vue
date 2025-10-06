@@ -4,12 +4,17 @@ import {useRouter} from 'vue-router'
 import {account} from '~/utils/appwrite'
 
 import {useAuthStore, useIsLoadingStore} from '~~/store/auth.store'
+import { useTheme } from '~/composables/useTheme'
 
 const router = useRouter()
 const isLoadingStore = useIsLoadingStore()
 const authStore = useAuthStore()
+const { initTheme } = useTheme()
 
 onMounted(async () => {
+  // Initialize theme
+  initTheme()
+  
   try {
     const user = await account.get()
     if (user) {

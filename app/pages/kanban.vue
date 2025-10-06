@@ -1,6 +1,7 @@
 <script setup lang="ts">
-// This is the main Kanban board page
-import KanbanBoard from '~/components/kanban/KanbanBoard.vue'
+useSeoMeta({
+  title: 'Kanban | CRM'
+})
 </script>
 
 <template>

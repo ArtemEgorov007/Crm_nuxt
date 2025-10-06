@@ -23,13 +23,16 @@ const emit = defineEmits<{
 const isDragOver = ref(false)
 const queryClient = useQueryClient()
 
-const {mutate} = useMutation({
+const {mutate, isPending} = useMutation({
   mutationKey: ['move-card'],
   mutationFn: ({docId, status}: { docId: string; status: EnumStatus }) =>
       DB.updateDocument(DB_ID, COLLECTION_DEALS, docId, {status}),
   onSuccess: () => {
     queryClient.invalidateQueries({queryKey: ['deals']})
     emit('card-moved')
+  },
+  onError: (error) => {
+    console.error('Error moving card:', error)
   }
 })
 
@@ -73,14 +76,21 @@ const handleDragEnd = () => {
       @dragleave="handleDragLeave"
       @drop="handleDrop(column)"
   >
-    <h2 class="column-title">
-      {{ column.name }}
+    <div class="column-header">
+      <h2 class="column-title">
+        {{ column.name }}
+      </h2>
       <span class="column-count">({{ column.items.length }})</span>
-    </h2>
+    </div>
 
-    <CreateDeal :status="column.id"/>
+    <CreateDeal :status="column.id" @deal-created="() => queryClient.invalidateQueries({queryKey: ['deals']})"/>
 
     <div class="column-content">
+      <div v-if="isPending" class="loading-indicator">
+        <div class="spinner-small"></div>
+        Перемещение...
+      </div>
+      
       <KanbanCard
           v-for="card in column.items"
           :key="card.id"
@@ -90,7 +100,7 @@ const handleDragEnd = () => {
           @dragend="handleDragEnd"
       />
 
-      <p v-if="column.items.length === 0" class="empty-column">Нет сделок</p>
+      <p v-if="column.items.length === 0 && !isPending" class="empty-column">Нет сделок</p>
     </div>
   </div>
 </template>
@@ -103,13 +113,21 @@ const handleDragEnd = () => {
   border-radius: var(--radius-lg)
   padding: var(--spacing-4)
   border: var(--border-width) solid var(--color-border)
-  transition: background-color 0.2s ease, box-shadow 0.2s ease
+  transition: all 0.2s ease
+  display: flex
+  flex-direction: column
 
   &--todo
     border-top: 3px solid var(--color-warning)
 
-  &--progress
+  &--to-be-agreed
+    border-top: 3px solid #f97316
+
+  &--in-progress
     border-top: 3px solid var(--color-primary)
+
+  &--produced
+    border-top: 3px solid #9333ea
 
   &--done
     border-top: 3px solid var(--color-success)
@@ -117,26 +135,64 @@ const handleDragEnd = () => {
   &--over
     background-color: rgba(59, 130, 246, 0.08)
     box-shadow: 0 0 0 2px var(--color-primary)
+    transform: scale(1.02)
+
+.column-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  margin-bottom: var(--spacing-3)
 
 .column-title
   font-size: var(--font-size-lg)
   font-weight: var(--font-weight-semibold)
-  margin-bottom: var(--spacing-3)
-  display: flex
-  justify-content: space-between
-  align-items: center
+  color: var(--color-text)
 
 .column-count
   font-size: var(--font-size-sm)
   color: var(--color-text-tertiary)
+  background-color: var(--color-bg)
+  padding: var(--spacing-1) var(--spacing-2)
+  border-radius: var(--radius-full)
+  min-width: 24px
+  text-align: center
 
 .column-content
   display: flex
   flex-direction: column
   gap: var(--spacing-3)
+  flex: 1
 
 .empty-column
   text-align: center
   font-style: italic
   color: var(--color-text-tertiary)
+  padding: var(--spacing-4)
+  border: 1px dashed var(--color-border)
+  border-radius: var(--radius-md)
+  flex: 1
+  display: flex
+  align-items: center
+  justify-content: center
+
+.loading-indicator
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: var(--spacing-2)
+  padding: var(--spacing-2)
+  color: var(--color-text-secondary)
+  font-size: var(--font-size-sm)
+
+.spinner-small
+  width: 16px
+  height: 16px
+  border: 2px solid var(--color-border)
+  border-top: 2px solid var(--color-primary)
+  border-radius: 50%
+  animation: spin 1s linear infinite
+
+@keyframes spin
+  to
+    transform: rotate(360deg)
 </style>

@@ -10,7 +10,7 @@ const sourceColumnRef = ref<IColumn | null>(null)
 
 const queryClient = useQueryClient()
 
-const {data, isLoading} = useKanbanQuery()
+const {data, isLoading, isError, error} = useKanbanQuery()
 
 const handleDragStart = (card: ICard, column: IColumn) => {
   dragCardRef.value = card
@@ -24,9 +24,14 @@ const handleDragEnd = () => {
 
 const handleCardMoved = () => {
   queryClient.invalidateQueries({queryKey: ['deals']})
+  queryClient.invalidateQueries({queryKey: ['deals-stats']})
 }
 
 const store = useDealSlideStore();
+
+const retry = () => {
+  queryClient.invalidateQueries({queryKey: ['deals']})
+}
 </script>
 
 <template>
@@ -36,9 +41,16 @@ const store = useDealSlideStore();
       <p class="kanban-subtitle">Управление сделками в режиме Kanban</p>
     </header>
 
+    <KanbanStats />
+
     <div v-if="isLoading" class="kanban-state">
       <div class="spinner"/>
       <p>Загрузка данных...</p>
+    </div>
+
+    <div v-else-if="isError" class="kanban-state">
+      <p class="error-message">Ошибка загрузки данных: {{ (error as Error).message }}</p>
+      <button class="retry-button" @click="retry">Повторить попытку</button>
     </div>
 
     <div v-else-if="data?.length" class="kanban-board">
@@ -56,6 +68,7 @@ const store = useDealSlideStore();
 
     <div v-else class="kanban-state">
       <p>Нет данных для отображения</p>
+      <p class="empty-state-hint">Создайте свою первую сделку, чтобы начать работать</p>
     </div>
   </div>
 
@@ -105,4 +118,29 @@ const store = useDealSlideStore();
   display: flex
   gap: var(--spacing-4)
   min-width: 800px
+
+.error-message
+  color: var(--color-error-text)
+  margin-bottom: var(--spacing-4)
+  text-align: center
+
+.retry-button
+  background-color: var(--color-primary)
+  color: white
+  border: none
+  padding: var(--spacing-2) var(--spacing-4)
+  border-radius: var(--radius-md)
+  cursor: pointer
+  font-weight: var(--font-weight-medium)
+  transition: background-color var(--transition-normal) ease
+
+  &:hover
+    background-color: var(--color-primary-hover)
+
+.empty-state-hint
+  margin-top: var(--spacing-2)
+  font-size: var(--font-size-sm)
+  color: var(--color-text-tertiary)
+  text-align: center
+  max-width: 300px
 </style>

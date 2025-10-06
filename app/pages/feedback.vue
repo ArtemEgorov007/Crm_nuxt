@@ -1,4 +1,53 @@
 <script setup lang="ts">
+import { useTheme } from '~/composables/useTheme'
+
+const { theme } = useTheme()
+
+const subjects = [
+  { value: '', label: 'Выберите тему' },
+  { value: 'support', label: 'Техническая поддержка' },
+  { value: 'feature', label: 'Предложение функции' },
+  { value: 'bug', label: 'Сообщить об ошибке' },
+  { value: 'other', label: 'Другое' }
+]
+
+const formData = reactive({
+  name: '',
+  email: '',
+  subject: '',
+  message: ''
+})
+
+const isSubmitting = ref(false)
+const submitSuccess = ref(false)
+const submitError = ref('')
+
+const submitForm = () => {
+  isSubmitting.value = true
+  submitError.value = ''
+  
+  setTimeout(() => {
+    isSubmitting.value = false
+    submitSuccess.value = true
+    
+    formData.name = ''
+    formData.email = ''
+    formData.subject = ''
+    formData.message = ''
+    
+    setTimeout(() => {
+      submitSuccess.value = false
+    }, 3000)
+  }, 1000)
+}
+
+const resetForm = () => {
+  formData.name = ''
+  formData.email = ''
+  formData.subject = ''
+  formData.message = ''
+  submitError.value = ''
+}
 </script>
 
 <template>
@@ -8,16 +57,22 @@
       <p class="subtitle">Ваше мнение важно для нас. Поделитесь своими мыслями и предложениями.</p>
     </div>
 
+    <div v-if="submitSuccess" class="success-message">
+      <Icon name="heroicons:check-circle" class="success-icon" />
+      <p>Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.</p>
+    </div>
+
     <UiCard class="feedback-card">
       <UiCardHeader>
         <UiCardTitle tag="h2">Отправить сообщение</UiCardTitle>
       </UiCardHeader>
 
       <UiCardContent>
-        <form class="feedback-form">
+        <form class="feedback-form" @submit.prevent="submitForm">
           <div class="form-group">
             <UiInput
                 id="name"
+                v-model="formData.name"
                 label="Имя"
                 placeholder="Введите ваше имя"
                 type="text"
@@ -28,6 +83,7 @@
           <div class="form-group">
             <UiInput
                 id="email"
+                v-model="formData.email"
                 label="Email"
                 placeholder="Введите ваш email"
                 type="email"
@@ -39,14 +95,17 @@
             <label for="subject" class="form-label">Тема</label>
             <select
                 id="subject"
+                v-model="formData.subject"
                 class="form-select"
                 required
             >
-              <option value="">Выберите тему</option>
-              <option value="support">Техническая поддержка</option>
-              <option value="feature">Предложение функции</option>
-              <option value="bug">Сообщить об ошибке</option>
-              <option value="other">Другое</option>
+              <option 
+                v-for="subject in subjects" 
+                :key="subject.value" 
+                :value="subject.value"
+              >
+                {{ subject.label }}
+              </option>
             </select>
           </div>
 
@@ -54,6 +113,7 @@
             <label for="message" class="form-label">Сообщение</label>
             <textarea
                 id="message"
+                v-model="formData.message"
                 class="form-textarea"
                 rows="5"
                 placeholder="Введите ваше сообщение"
@@ -62,8 +122,25 @@
           </div>
 
           <div class="form-actions">
-            <UiButton type="submit" variant="primary" size="md">Отправить</UiButton>
-            <UiButton type="reset" variant="secondary" size="md">Очистить</UiButton>
+            <UiButton 
+              type="submit" 
+              variant="primary" 
+              size="md"
+              :loading="isSubmitting"
+              :disabled="isSubmitting"
+            >
+              <Icon v-if="!isSubmitting" name="heroicons:paper-airplane" />
+              {{ isSubmitting ? 'Отправка...' : 'Отправить' }}
+            </UiButton>
+            <UiButton 
+              type="reset" 
+              variant="secondary" 
+              size="md"
+              @click="resetForm"
+            >
+              <Icon name="heroicons:x-mark" />
+              Очистить
+            </UiButton>
           </div>
         </form>
       </UiCardContent>
@@ -77,18 +154,39 @@
 
         <UiCardContent>
           <div class="contact-item">
-            <span class="contact-label">Email:</span>
-            <span class="contact-value">support@mycrm.com</span>
+            <Icon 
+              name="heroicons:envelope" 
+              class="contact-icon"
+              :class="{ 'dark': theme === 'dark' }"
+            />
+            <div class="contact-details">
+              <span class="contact-label">Email:</span>
+              <span class="contact-value">support@mycrm.com</span>
+            </div>
           </div>
 
           <div class="contact-item">
-            <span class="contact-label">Телефон:</span>
-            <span class="contact-value">+7 (495) 123-45-67</span>
+            <Icon 
+              name="heroicons:phone" 
+              class="contact-icon"
+              :class="{ 'dark': theme === 'dark' }"
+            />
+            <div class="contact-details">
+              <span class="contact-label">Телефон:</span>
+              <span class="contact-value">+7 (495) 123-45-67</span>
+            </div>
           </div>
 
           <div class="contact-item">
-            <span class="contact-label">Адрес:</span>
-            <span class="contact-value">г. Москва, ул. Примерная, д. 10</span>
+            <Icon 
+              name="heroicons:map-pin" 
+              class="contact-icon"
+              :class="{ 'dark': theme === 'dark' }"
+            />
+            <div class="contact-details">
+              <span class="contact-label">Адрес:</span>
+              <span class="contact-value">г. Москва, ул. Примерная, д. 10</span>
+            </div>
           </div>
         </UiCardContent>
       </UiCard>
@@ -118,6 +216,20 @@
   color: var(--color-text-secondary)
   font-size: var(--font-size-lg)
   line-height: var(--line-height-normal)
+
+.success-message
+  display: flex
+  align-items: center
+  gap: var(--spacing-3)
+  padding: var(--spacing-4)
+  background-color: rgba(34, 197, 94, 0.1)
+  border: 1px solid var(--color-success)
+  border-radius: var(--radius-md)
+  color: var(--color-success)
+
+  .success-icon
+    width: 24px
+    height: 24px
 
 .feedback-card
   margin-bottom: var(--spacing-6)
@@ -180,12 +292,27 @@
 .contact-info
   .contact-item
     display: flex
-    justify-content: space-between
-    padding: var(--spacing-3) 0
+    align-items: flex-start
+    gap: var(--spacing-3)
+    padding: var(--spacing-4) 0
     border-bottom: var(--border-width) solid var(--color-border)
 
     &:last-child
       border-bottom: none
+
+  .contact-icon
+    width: 20px
+    height: 20px
+    color: var(--color-text-secondary)
+    margin-top: var(--spacing-1)
+    
+    &.dark
+      color: var(--color-text-tertiary)
+
+  .contact-details
+    display: flex
+    flex-direction: column
+    gap: var(--spacing-1)
 
   .contact-label
     font-weight: var(--font-weight-medium)
@@ -193,7 +320,6 @@
 
   .contact-value
     color: var(--color-text-secondary)
-    text-align: right
 
 @media (max-width: 768px)
   .feedback-container
@@ -205,8 +331,13 @@
   .contact-info
     .contact-item
       flex-direction: column
-      gap: var(--spacing-1)
+      gap: var(--spacing-2)
+
+    .contact-details
+      flex-direction: row
+      justify-content: space-between
+      gap: var(--spacing-2)
 
     .contact-value
-      text-align: left
+      text-align: right
 </style>

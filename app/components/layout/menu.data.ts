@@ -11,6 +11,11 @@ export const MENU_DATA: IMenuItem[] = [
         url: '/',
     },
     {
+        icon: 'mdi:view-dashboard',
+        name: 'Dashboard',
+        url: '/dashboard',
+    },
+    {
         name: 'Products',
         icon: 'ep:goods',
         url: '/products',

@@ -51,6 +51,10 @@ const logout = async () => {
     </nav>
 
     <div class="sidebar__footer">
+      <div class="sidebar__theme-toggle">
+        <UiThemeToggle />
+      </div>
+      
       <button class="logout-btn" @click="logout" aria-label="Выйти из аккаунта">
         <Icon name="heroicons:arrow-left-on-rectangle" class="logout-icon"/>
         <span class="logout-label" v-if="isOpen">Выйти</span>
@@ -81,6 +85,10 @@ const logout = async () => {
       padding: 0
       width: auto
 
+    .sidebar__theme-toggle
+      display: flex
+      justify-content: center
+
   &__header
     flex-shrink: 0
     display: flex
@@ -98,6 +106,13 @@ const logout = async () => {
     flex-shrink: 0
     padding: var(--spacing-4)
     border-top: var(--border-width) solid var(--color-border)
+    display: flex
+    flex-direction: column
+    gap: var(--spacing-4)
+
+  &__theme-toggle
+    display: flex
+    justify-content: flex-start
 
 .logo-link
   display: block

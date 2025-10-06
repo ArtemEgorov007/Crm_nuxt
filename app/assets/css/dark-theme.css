@@ -1,0 +1,76 @@
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  /* System colors */
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-primary-active: #2563eb;
+  --color-secondary: #94a3b8;
+  --color-secondary-hover: #64748b;
+  --color-accent: #fbbf24;
+  --color-accent-hover: #f59e0b;
+  --color-success: #34d399;
+  --color-success-hover: #10b981;
+  --color-danger: #f87171;
+  --color-danger-hover: #ef4444;
+  --color-warning: #fde047;
+  --color-warning-hover: #facc15;
+  --color-info: #38bdf8;
+  --color-info-hover: #0ea5e9;
+
+  /* Background colors */
+  --color-bg: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
+  --color-bg-overlay: rgba(15, 23, 42, 0.8);
+
+  /* Text colors */
+  --color-text: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-tertiary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #0f172a;
+
+  /* Component colors */
+  --color-border: #334155;
+  --color-border-hover: #475569;
+  --color-border-focus: #60a5fa;
+
+  /* Card colors */
+  --color-card-bg: #1e293b;
+  --color-card-border: #334155;
+  --color-card-shadow: rgba(0, 0, 0, 0.25);
+
+  /* Button colors */
+  --color-button-primary-bg: #3b82f6;
+  --color-button-primary-bg-hover: #2563eb;
+  --color-button-primary-text: #ffffff;
+  --color-button-secondary-bg: #334155;
+  --color-button-secondary-bg-hover: #475569;
+  --color-button-secondary-text: #f1f5f9;
+  --color-button-outline-border: #60a5fa;
+  --color-button-outline-text: #60a5fa;
+  --color-button-outline-text-hover: #93c5fd;
+  --color-button-ghost-text: #60a5fa;
+  --color-button-ghost-text-hover: #93c5fd;
+  --color-button-danger-bg: #ef4444;
+  --color-button-danger-bg-hover: #dc2626;
+  --color-button-danger-text: #ffffff;
+  --color-button-disabled-bg: #1e293b;
+  --color-button-disabled-text: #475569;
+
+  /* Input colors */
+  --color-input-bg: #0f172a;
+  --color-input-border: #334155;
+  --color-input-border-hover: #475569;
+  --color-input-border-focus: #60a5fa;
+  --color-input-text: #f1f5f9;
+  --color-input-placeholder: #64748b;
+  --color-input-disabled-bg: #1e293b;
+  --color-input-disabled-text: #475569;
+
+  /* Shadows (inverted for dark mode) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
